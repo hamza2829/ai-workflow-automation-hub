@@ -1,7 +1,7 @@
 {
   "id": "errorRecovery001",
   "name": "Error recovery and alert",
-  "active": true,
+  "active": false,
   "nodes": [
     {
       "id": "f48fe41b-4a5d-4c94-927c-5c919cecd9b7",
@@ -107,5 +107,6 @@
     "saveDataSuccessExecution": "all"
   },
   "versionId": "f34f4be7-4b5b-4018-b4e1-b79b883dc3f3",
-  "tags": []
+  "tags": [],
+  "activeVersionId": null
 }

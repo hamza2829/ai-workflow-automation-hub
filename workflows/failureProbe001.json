@@ -1,7 +1,7 @@
 {
   "id": "failureProbe001",
   "name": "Synthetic failure probe",
-  "active": true,
+  "active": false,
   "nodes": [
     {
       "id": "30e9f601-c8b2-46ee-902f-ae4920e8dd7c",
@@ -70,5 +70,6 @@
     "errorWorkflow": "errorRecovery001"
   },
   "versionId": "489a0fa8-43c5-4306-8f2e-d8dcdece167d",
-  "tags": []
+  "tags": [],
+  "activeVersionId": null
 }

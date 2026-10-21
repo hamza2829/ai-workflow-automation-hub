@@ -51,7 +51,8 @@ const flow = (id, name, nodes, edges, settings = {}) => {
   write("workflows/" + id + ".json", {
     id,
     name,
-    active: true,
+    active: false,
+    activeVersionId: null,
     nodes,
     connections,
     settings: {

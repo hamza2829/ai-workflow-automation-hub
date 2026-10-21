@@ -1,7 +1,7 @@
 {
   "id": "dailyReport001",
   "name": "Daily operational report",
-  "active": true,
+  "active": false,
   "nodes": [
     {
       "id": "8a4814f9-f4ed-4c9a-ace1-3f2b2bde0883",
@@ -138,5 +138,6 @@
     "errorWorkflow": "errorRecovery001"
   },
   "versionId": "7ca76851-35d5-4a7f-a9fa-ec741ca2d9b3",
-  "tags": []
+  "tags": [],
+  "activeVersionId": null
 }

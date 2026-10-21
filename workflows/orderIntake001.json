@@ -1,7 +1,7 @@
 {
   "id": "orderIntake001",
   "name": "Order intake with human review",
-  "active": true,
+  "active": false,
   "nodes": [
     {
       "id": "52f51bb5-68c1-4c4f-9446-a3d845793101",
@@ -356,5 +356,6 @@
     "errorWorkflow": "errorRecovery001"
   },
   "versionId": "d19d9a38-1fb6-46f3-a94d-9bdc0ab18b2c",
-  "tags": []
+  "tags": [],
+  "activeVersionId": null
 }

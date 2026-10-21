@@ -17,7 +17,7 @@
           "interval": [
             {
               "field": "cronExpression",
-              "expression": "0 9 * * *"
+              "expression": "={{ $env.REPORT_CRON || \"0 9 * * *\" }}"
             }
           ]
         }
@@ -89,7 +89,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ $json }}",
+        "jsonBody": "={{ {...$json, trigger: $execution.mode} }}",
         "options": {
           "timeout": 20000
         }

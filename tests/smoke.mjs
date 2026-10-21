@@ -183,6 +183,15 @@ await until(
   "daily report",
 );
 mark("daily report graph reads PostgreSQL and sends summary");
+if (process.env.EXPECT_SCHEDULE === "1") {
+  await until(
+    async () =>
+      (await records()).data.some((x) => x.body.trigger === "trigger"),
+    "real schedule trigger",
+    90000,
+  );
+  mark("real scheduled report fires on accelerated CI clock");
+}
 const invoices = (await call(base + "/invoice-drafts")).data;
 assert(invoices.some((x) => x.order_id === high.id));
 mark("invoice drafts persisted");

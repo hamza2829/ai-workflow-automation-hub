@@ -4,6 +4,9 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      REPORT_CRON: "* * * * *"
+      EXPECT_SCHEDULE: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,6 +28,10 @@ jobs:
       - run: docker compose up -d --build --wait --wait-timeout 240
       - run: sh tests/smoke.sh
       - run: node tests/evaluate.mjs
+      - name: Export the workflows from the running n8n instance
+        run: |
+          docker compose exec -T n8n n8n export:workflow --all --output=/tmp/workflows-export.json
+          docker compose cp n8n:/tmp/workflows-export.json docs/runs/workflows-export.json
       - name: Run local Ollama model and evaluate compatible API
         run: |
           docker compose --profile ollama up -d ollama

@@ -355,7 +355,7 @@ app.post(
       await remote(
         `${process.env.INTEGRATIONS_URL}/slack`,
         req.body,
-        `report-${new Date().toISOString().slice(0, 10)}-${req.header("Idempotency-Key") || "scheduled"}`,
+        `report-${new Date().toISOString().slice(0, 10)}-${req.body.trigger || "api"}-${req.header("Idempotency-Key") || "scheduled"}`,
       ),
     ),
   ),

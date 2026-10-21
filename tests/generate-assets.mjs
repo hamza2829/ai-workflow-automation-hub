@@ -187,14 +187,23 @@ flow(
       "scheduleTrigger",
       {
         rule: {
-          interval: [{ field: "cronExpression", expression: "0 9 * * *" }],
+          interval: [
+            {
+              field: "cronExpression",
+              expression: '={{ $env.REPORT_CRON || "0 9 * * *" }}',
+            },
+          ],
         },
       },
       1.2,
     ),
     hook("Manual report test", "report"),
     report,
-    http("Send summary", "http://backend:3000/reports/send", "={{ $json }}"),
+    http(
+      "Send summary",
+      "http://backend:3000/reports/send",
+      "={{ {...$json, trigger: $execution.mode} }}",
+    ),
   ],
   [
     ["Daily at 09", "Read PostgreSQL report"],

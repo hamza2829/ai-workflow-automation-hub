@@ -22,9 +22,15 @@ services:
       INTEGRATIONS_URL: http://integrations:8090
     ports: ["127.0.0.1:3000:3000"]
     depends_on:
-      postgres: {condition: service_healthy}
+      postgres: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)})"]
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)})",
+        ]
       interval: 3s
       retries: 30
   llm:
@@ -38,7 +44,13 @@ services:
       LLM_API_KEY: ${LLM_API_KEY:-}
     ports: ["127.0.0.1:8000:8000"]
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/health')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request;urllib.request.urlopen('http://localhost:8000/health')",
+        ]
       interval: 3s
       retries: 30
   integrations:
@@ -65,8 +77,8 @@ services:
       - ./workflows:/workflows:ro
       - ./tests/n8n-start.sh:/bootstrap/start.sh:ro
     depends_on:
-      backend: {condition: service_healthy}
-      llm: {condition: service_healthy}
+      backend: { condition: service_healthy }
+      llm: { condition: service_healthy }
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:5678/healthz"]
       interval: 5s

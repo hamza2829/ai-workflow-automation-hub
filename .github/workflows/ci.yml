@@ -7,9 +7,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: {node-version: '22', cache: npm, cache-dependency-path: backend/package-lock.json}
+        with:
+          {
+            node-version: "22",
+            cache: npm,
+            cache-dependency-path: backend/package-lock.json,
+          }
       - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
+        with: { python-version: "3.12" }
       - run: npm ci
         working-directory: backend
       - run: npm run lint && npm test && npm run build
@@ -20,10 +25,16 @@ jobs:
       - run: docker compose up -d --build --wait --wait-timeout 240
       - run: sh tests/smoke.sh
       - run: node tests/evaluate.mjs
+      - name: Run local Ollama model and evaluate compatible API
+        run: |
+          docker compose --profile ollama up -d ollama
+          docker compose exec -T ollama ollama pull qwen2.5:0.5b
+          LLM_MODE=ollama docker compose up -d --no-deps --wait llm
+          node tests/evaluate.mjs
       - uses: actions/upload-artifact@v4
         if: always()
-        with: {name: execution-evidence, path: docs/runs/}
+        with: { name: execution-evidence, path: docs/runs/ }
       - run: docker compose logs --no-color
         if: failure()
-      - run: docker compose down -v
+      - run: docker compose --profile ollama down -v
         if: always()

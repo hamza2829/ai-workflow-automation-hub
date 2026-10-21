@@ -1,0 +1,74 @@
+{
+  "id": "failureProbe001",
+  "name": "Synthetic failure probe",
+  "active": true,
+  "nodes": [
+    {
+      "id": "30e9f601-c8b2-46ee-902f-ae4920e8dd7c",
+      "name": "Failure probe",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "failure-probe",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "beddf5e3-8ec1-4e62-a03a-e0d07973a985"
+    },
+    {
+      "id": "9fbe7cd3-60e5-4381-a3c6-d2d287aff36b",
+      "name": "Deliberate failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        200
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://backend:3000/not-a-real-route",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "={{ $env.API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {} }}",
+        "options": {
+          "timeout": 20000
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Failure probe": {
+      "main": [
+        [
+          {
+            "node": "Deliberate failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "errorWorkflow": "errorRecovery001"
+  },
+  "versionId": "489a0fa8-43c5-4306-8f2e-d8dcdece167d",
+  "tags": []
+}

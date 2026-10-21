@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "label": "engineering",
+    "description": "Build a technical integration"
+  },
+  {
+    "id": 2,
+    "label": "engineering",
+    "description": "Fix the API bug"
+  },
+  {
+    "id": 3,
+    "label": "engineering",
+    "description": "Review deployment plan"
+  },
+  {
+    "id": 4,
+    "label": "engineering",
+    "description": "Debug API latency"
+  },
+  {
+    "id": 5,
+    "label": "engineering",
+    "description": "Add integration mapping"
+  },
+  {
+    "id": 6,
+    "label": "engineering",
+    "description": "Technical migration request"
+  },
+  {
+    "id": 7,
+    "label": "sales",
+    "description": "Add license seats"
+  },
+  {
+    "id": 8,
+    "label": "sales",
+    "description": "Renew subscription"
+  },
+  {
+    "id": 9,
+    "label": "sales",
+    "description": "Schedule a demo"
+  },
+  {
+    "id": 10,
+    "label": "sales",
+    "description": "Request plan upgrade"
+  },
+  {
+    "id": 11,
+    "label": "sales",
+    "description": "Purchase ten seats"
+  },
+  {
+    "id": 12,
+    "label": "sales",
+    "description": "New annual license"
+  },
+  {
+    "id": 13,
+    "label": "finance",
+    "description": "Correct invoice address"
+  },
+  {
+    "id": 14,
+    "label": "finance",
+    "description": "Issue a refund"
+  },
+  {
+    "id": 15,
+    "label": "finance",
+    "description": "Resolve payment mismatch"
+  },
+  {
+    "id": 16,
+    "label": "finance",
+    "description": "Update billing contact"
+  },
+  {
+    "id": 17,
+    "label": "finance",
+    "description": "Review tax amount"
+  },
+  {
+    "id": 18,
+    "label": "finance",
+    "description": "Send invoice copy"
+  },
+  {
+    "id": 19,
+    "label": "engineering",
+    "description": "Connect our systems"
+  },
+  {
+    "id": 20,
+    "label": "finance",
+    "description": "Return duplicate charge"
+  }
+]

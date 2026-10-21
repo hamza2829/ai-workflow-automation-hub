@@ -1,0 +1,142 @@
+{
+  "id": "dailyReport001",
+  "name": "Daily operational report",
+  "active": true,
+  "nodes": [
+    {
+      "id": "8a4814f9-f4ed-4c9a-ace1-3f2b2bde0883",
+      "name": "Daily at 09",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "77272df0-ef48-4bfa-af15-a0d32d20b035",
+      "name": "Manual report test",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        200
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "report",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "a6c65710-3360-4450-bad6-e4457bd89465"
+    },
+    {
+      "id": "4a1e49d3-34e8-4581-a0be-cb1e00c8d5de",
+      "name": "Read PostgreSQL report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        200
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "http://backend:3000/reports/daily",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "={{ $env.API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 20000
+        }
+      }
+    },
+    {
+      "id": "836c1aef-2531-4c5f-9369-1d1fd711c61d",
+      "name": "Send summary",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        200
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://backend:3000/reports/send",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "={{ $env.API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {
+          "timeout": 20000
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Daily at 09": {
+      "main": [
+        [
+          {
+            "node": "Read PostgreSQL report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual report test": {
+      "main": [
+        [
+          {
+            "node": "Read PostgreSQL report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read PostgreSQL report": {
+      "main": [
+        [
+          {
+            "node": "Send summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "errorWorkflow": "errorRecovery001"
+  },
+  "versionId": "7ca76851-35d5-4a7f-a9fa-ec741ca2d9b3",
+  "tags": []
+}

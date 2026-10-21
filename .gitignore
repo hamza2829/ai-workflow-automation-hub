@@ -1,0 +1,8 @@
+.env
+node_modules/
+dist/
+__pycache__/
+.pytest_cache/
+.venv/
+*.log
+docs/runs/local-*.json

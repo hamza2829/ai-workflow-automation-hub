@@ -1,0 +1,97 @@
+name: ai-workflow-automation-hub
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hub
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run node tests/setup.mjs}
+      POSTGRES_DB: hub
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hub"]
+      interval: 3s
+      retries: 30
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: postgres://hub:${POSTGRES_PASSWORD}@postgres:5432/hub
+      API_KEY: ${API_KEY:?Run node tests/setup.mjs}
+      N8N_URL: http://n8n:5678
+      INTEGRATIONS_URL: http://integrations:8090
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)})"]
+      interval: 3s
+      retries: 30
+  llm:
+    build:
+      context: .
+      dockerfile: llm-service/Dockerfile
+    environment:
+      LLM_MODE: ${LLM_MODE:-mock}
+      LLM_BASE_URL: ${LLM_BASE_URL:-http://ollama:11434/v1}
+      LLM_MODEL: ${LLM_MODEL:-qwen2.5:0.5b}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+    ports: ["127.0.0.1:8000:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 3s
+      retries: 30
+  integrations:
+    build:
+      context: .
+      dockerfile: tests/Dockerfile
+    ports: ["127.0.0.1:8090:8090"]
+  n8n:
+    image: n8nio/n8n:1.123.0
+    entrypoint: ["/bin/sh", "/bootstrap/start.sh"]
+    environment:
+      API_KEY: ${API_KEY}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?Run node tests/setup.mjs}
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+      N8N_SECURE_COOKIE: "false"
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_PERSONALIZATION_ENABLED: "false"
+      N8N_METRICS: "true"
+      WEBHOOK_URL: http://n8n:5678/
+      GENERIC_TIMEZONE: Europe/Berlin
+    ports: ["127.0.0.1:5678:5678"]
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflows:/workflows:ro
+      - ./tests/n8n-start.sh:/bootstrap/start.sh:ro
+    depends_on:
+      backend: {condition: service_healthy}
+      llm: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5678/healthz"]
+      interval: 5s
+      retries: 40
+      start_period: 30s
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports: ["127.0.0.1:8025:8025"]
+  prometheus:
+    image: prom/prometheus:v3.2.1
+    volumes: ["./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro"]
+    ports: ["127.0.0.1:9090:9090"]
+  grafana:
+    image: grafana/grafana:11.5.2
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:?Run node tests/setup.mjs}
+    volumes:
+      - ./monitoring/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/dashboard.json:/var/lib/grafana/dashboards/hub.json:ro
+    ports: ["127.0.0.1:3001:3000"]
+  ollama:
+    image: ollama/ollama:0.6.2
+    profiles: ["ollama"]
+    volumes: ["ollama_data:/root/.ollama"]
+volumes:
+  postgres_data:
+  n8n_data:
+  ollama_data:

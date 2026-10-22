@@ -55,6 +55,7 @@ def test_compatible_api_contract(monkeypatch):
     async def handler(request):
         import json
 
+        assert request.headers["Authorization"] == "Bearer ollama"
         captured.update(json.loads(request.content))
         return httpx.Response(
             200,
@@ -71,6 +72,7 @@ def test_compatible_api_contract(monkeypatch):
 
     real_client = httpx.AsyncClient
     monkeypatch.setenv("LLM_MODE", "ollama")
+    monkeypatch.setenv("LLM_API_KEY", "")
     monkeypatch.setattr(
         module.httpx,
         "AsyncClient",

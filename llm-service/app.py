@@ -60,7 +60,7 @@ async def classify(description: str) -> Classification:
     async with httpx.AsyncClient(timeout=60) as client:
         response = await client.post(
             f"{base}/chat/completions",
-            headers={"Authorization": f"Bearer {os.getenv('LLM_API_KEY', 'ollama')}"},
+            headers={"Authorization": f"Bearer {os.getenv('LLM_API_KEY') or 'ollama'}"},
             json={
                 "model": os.getenv("LLM_MODEL", "qwen2.5:0.5b"),
                 "temperature": 0,
@@ -95,7 +95,10 @@ async def classify_order(order: Order):
     fallback = False
     try:
         result = await classify(order.description)
-    except (httpx.HTTPError, ValueError, KeyError, IndexError):
+    except (httpx.HTTPError, ValueError, KeyError, IndexError) as error:
+        logger.warning(
+            json.dumps({"event": "model_fallback", "error_type": type(error).__name__})
+        )
         fallback = True
         result = Classification(
             category="sales",

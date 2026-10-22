@@ -19,8 +19,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         }
       }
@@ -39,8 +45,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         }
       }
@@ -63,8 +75,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         },
         "parameters": [
@@ -109,8 +127,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         },
         "parameters": [
@@ -144,8 +168,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         },
         "parameters": [
@@ -158,7 +188,43 @@
               "format": "uuid"
             }
           }
-        ]
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "category",
+                  "summary",
+                  "confidence"
+                ],
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "engineering",
+                      "sales",
+                      "finance"
+                    ]
+                  },
+                  "summary": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  },
+                  "confidence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/orders/{id}/fulfill": {
@@ -179,8 +245,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         },
         "parameters": [
@@ -214,8 +286,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         },
         "parameters": [
@@ -249,8 +327,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         }
       }
@@ -273,8 +357,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         }
       }
@@ -297,8 +387,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         },
         "parameters": [
@@ -311,7 +407,27 @@
               "format": "uuid"
             }
           }
-        ]
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "resumeUrl"
+                ],
+                "properties": {
+                  "resumeUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Must target configured n8n origin and /webhook-waiting/ path"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/approvals/{id}/decision": {
@@ -332,8 +448,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         },
         "parameters": [
@@ -389,8 +511,14 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
           }
         }
       }
@@ -413,8 +541,26 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "Daily aggregation and trigger mode"
+              }
+            }
           }
         }
       }
@@ -437,8 +583,26 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "n8n error event, persisted for investigation"
+              }
+            }
           }
         }
       }
@@ -461,8 +625,26 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "Recovery result included in operations alert"
+              }
+            }
           }
         }
       }
@@ -485,8 +667,33 @@
           "401": {
             "description": "Missing or invalid API key"
           },
+          "404": {
+            "description": "Resource not found"
+          },
           "409": {
             "description": "Conflicting state"
+          },
+          "500": {
+            "description": "Downstream or server error; safe action keys allow retries"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "seconds"
+                ],
+                "properties": {
+                  "seconds": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
           }
         }
       }

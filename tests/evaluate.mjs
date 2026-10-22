@@ -25,6 +25,9 @@ const output = {
   samples: results.length,
   correct: results.filter((r) => r.correct).length,
   accuracy: results.filter((r) => r.correct).length / results.length,
+  fallbacks: results.filter((r) => r.fallback).length,
+  human_review_count: results.filter((r) => r.classification.confidence < 0.8)
+    .length,
   mean_request_ms: times.reduce((a, b) => a + b, 0) / times.length,
   p95_request_ms: times[Math.ceil(times.length * 0.95) - 1],
   results,

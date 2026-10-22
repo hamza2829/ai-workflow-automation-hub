@@ -20,10 +20,11 @@ jobs:
         with: { python-version: "3.12" }
       - run: npm ci
         working-directory: backend
+      - run: mkdir -p docs/runs
       - run: npm run lint && npm test && npm run build
         working-directory: backend
       - run: pip install -r llm-service/requirements.txt
-      - run: ruff check llm-service && pytest -q llm-service
+      - run: ruff check llm-service && pytest -q llm-service --junitxml=docs/runs/pytest.xml
       - run: node tests/setup.mjs
       - run: docker compose up -d --build --wait --wait-timeout 240
       - run: sh tests/smoke.sh

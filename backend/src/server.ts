@@ -50,6 +50,21 @@ const latency = new Histogram({
   registers: [registry],
 });
 export const app = express();
+app.use((req, res, next) => {
+  const started = performance.now();
+  res.on("finish", () =>
+    log.info(
+      {
+        method: req.method,
+        path: req.path,
+        status: res.statusCode,
+        duration_ms: performance.now() - started,
+      },
+      "request completed",
+    ),
+  );
+  next();
+});
 app.use(express.json({ limit: "32kb" }));
 const wrap =
   (fn: (req: Request, res: Response) => Promise<unknown>) =>

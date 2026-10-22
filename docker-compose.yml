@@ -59,7 +59,7 @@ services:
       dockerfile: tests/Dockerfile
     ports: ["127.0.0.1:8090:8090"]
   n8n:
-    image: n8nio/n8n:1.123.0
+    image: n8nio/n8n:2.44.5
     entrypoint: ["/bin/sh", "/bootstrap/start.sh"]
     environment:
       API_KEY: ${API_KEY}
@@ -69,6 +69,7 @@ services:
       N8N_DIAGNOSTICS_ENABLED: "false"
       N8N_PERSONALIZATION_ENABLED: "false"
       N8N_METRICS: "true"
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
       WEBHOOK_URL: http://n8n:5678/
       GENERIC_TIMEZONE: Europe/Berlin
       REPORT_CRON: ${REPORT_CRON:-0 9 * * *}
@@ -81,7 +82,13 @@ services:
       backend: { condition: service_healthy }
       llm: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5678/healthz"]
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:5678/healthz').then(r=>{if(!r.ok)process.exit(1)})",
+        ]
       interval: 5s
       retries: 40
       start_period: 30s

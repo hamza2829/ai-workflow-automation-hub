@@ -80,7 +80,7 @@ async function remote(url: string, body: unknown, key: string) {
     signal: AbortSignal.timeout(15000),
   });
   if (!response.ok) throw new Error(`Integration HTTP ${response.status}`);
-  return response.json() as Promise<{ id: string }>;
+  return z.object({ id: z.string().min(1) }).parse(await response.json());
 }
 app.get(
   "/health",
@@ -369,7 +369,10 @@ app.post(
     res.json(
       await remote(
         `${process.env.INTEGRATIONS_URL}/slack`,
-        req.body,
+        {
+          ...req.body,
+          text: `Daily operations report: ${JSON.stringify(req.body.orders)}`,
+        },
         `report-${new Date().toISOString().slice(0, 10)}-${req.body.trigger || "api"}-${req.header("Idempotency-Key") || "scheduled"}`,
       ),
     ),
@@ -398,7 +401,11 @@ app.post(
     res.json(
       await remote(
         `${process.env.INTEGRATIONS_URL}/slack`,
-        { alert: "workflow failure", ...req.body },
+        {
+          ...req.body,
+          alert: "workflow failure",
+          text: `Workflow failure. Recovery result: ${JSON.stringify(req.body)}`,
+        },
         `alert-${randomUUID()}`,
       ),
     ),

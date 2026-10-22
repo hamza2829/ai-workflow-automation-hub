@@ -18,6 +18,23 @@ http
     }
     if (!["/tasks", "/invoices", "/slack"].includes(req.url))
       return send(404, {});
+    let payload;
+    try {
+      payload = JSON.parse(body);
+    } catch {
+      return send(400, { error: "Invalid JSON" });
+    }
+    if (req.url === "/slack" && typeof payload.text !== "string")
+      return send(400, { error: "Slack requires text" });
+    if (req.url === "/tasks" && (!payload.summary || !payload.team))
+      return send(400, { error: "Task requires summary and team" });
+    if (
+      req.url === "/invoices" &&
+      (!(payload.amount > 0) || !["EUR", "USD"].includes(payload.currency))
+    )
+      return send(400, {
+        error: "Invoice requires positive amount and supported currency",
+      });
     const key = req.url + ":" + req.headers["idempotency-key"];
     if (!req.headers["idempotency-key"])
       return send(400, { error: "Missing idempotency key" });
@@ -29,7 +46,7 @@ http
     const result = {
       id: "mock-" + (records.size + 1),
       path: req.url,
-      body: JSON.parse(body),
+      body: payload,
     };
     records.set(key, result);
     console.log(

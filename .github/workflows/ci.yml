@@ -38,7 +38,7 @@ jobs:
           docker compose cp n8n:/tmp/workflows-export.json docs/runs/workflows-export.json
       - name: Run local Ollama model and evaluate compatible API
         run: |
-          docker compose --profile ollama up -d ollama
+          docker compose --profile ollama up -d --wait ollama
           docker compose exec -T ollama ollama pull qwen2.5:0.5b
           LLM_MODE=ollama docker compose up -d --no-deps --wait llm
           node tests/evaluate.mjs

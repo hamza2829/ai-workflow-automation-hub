@@ -87,7 +87,7 @@ Repository definitions are inactive for clean import. Bootstrap publishes each w
 Mock mode is a deterministic keyword test double. It validates the automation paths without making an inference request. A real local model runs through Ollama's OpenAI compatible API:
 
 ```sh
-docker compose --profile ollama up -d ollama
+docker compose --profile ollama up -d --wait ollama
 docker compose exec -T ollama ollama pull qwen2.5:0.5b
 LLM_MODE=ollama docker compose up -d --no-deps --wait llm
 node tests/evaluate.mjs

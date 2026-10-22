@@ -223,8 +223,20 @@ await until(async () => {
 }, "Prometheus scrapes");
 mark("Prometheus scrape targets up");
 assert((await fetch("http://localhost:3001/api/health")).ok);
+const dashboardResponse = await fetch(
+  "http://localhost:3001/api/dashboards/uid/automation-hub",
+  {
+    headers: {
+      Authorization:
+        "Basic " +
+        Buffer.from("admin:" + env.GRAFANA_PASSWORD).toString("base64"),
+    },
+  },
+);
+assert(dashboardResponse.ok);
+assert.equal((await dashboardResponse.json()).dashboard.panels.length, 4);
 assert((await fetch("http://localhost:8025/api/v2/messages")).ok);
-mark("Grafana and MailHog health");
+mark("Grafana dashboard provisioned and MailHog healthy");
 mkdirSync("docs/runs", { recursive: true });
 const result = {
   timestamp: new Date().toISOString(),

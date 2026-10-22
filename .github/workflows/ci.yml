@@ -28,6 +28,9 @@ jobs:
       - run: node tests/setup.mjs
       - run: docker compose up -d --build --wait --wait-timeout 240
       - run: sh tests/smoke.sh
+      - run: npx playwright install --with-deps chromium
+        working-directory: backend
+      - run: node backend/tests/ui.mjs
       - run: node tests/evaluate.mjs
       - name: Export the workflows from the running n8n instance
         run: |

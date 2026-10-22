@@ -83,6 +83,7 @@ const llm = http(
   "http://llm:8000/classify",
   "={{ {description: $json.payload.description} }}",
 );
+llm.parameters.options.timeout = 75000;
 const telemetry = http(
   "Record LLM latency",
   "http://backend:3000/telemetry/llm",

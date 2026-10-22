@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-10-22T00:21:00.153Z",
+  "mode": "mock",
+  "passed": 14,
+  "checks": [
+    "API authentication",
+    "payload contract validation",
+    "webhook through LLM task invoice and Slack",
+    "concurrent idempotency and conflict detection",
+    "retried webhook has no duplicate external effects",
+    "human approved resumes n8n and gates effects",
+    "human rejected resumes n8n and gates effects",
+    "bounded retries error workflow recovery and alert",
+    "daily report graph reads PostgreSQL and sends summary",
+    "real scheduled report fires on accelerated CI clock",
+    "invoice drafts persisted",
+    "Prometheus instrumentation",
+    "Prometheus scrape targets up",
+    "Grafana dashboard provisioned and MailHog healthy"
+  ],
+  "timings": [
+    {
+      "case": "automatic",
+      "milliseconds": 586
+    }
+  ]
+}

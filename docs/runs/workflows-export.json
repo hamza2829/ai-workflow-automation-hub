@@ -1,0 +1,697 @@
+[
+  {
+    "id": "dailyReport001",
+    "name": "Daily operational report",
+    "active": false,
+    "nodes": [
+      {
+        "id": "8a4814f9-f4ed-4c9a-ace1-3f2b2bde0883",
+        "name": "Daily at 09",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "={{ $env.REPORT_CRON || \"0 9 * * *\" }}"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "77272df0-ef48-4bfa-af15-a0d32d20b035",
+        "name": "Manual report test",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          240,
+          200
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "report",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "webhookId": "a6c65710-3360-4450-bad6-e4457bd89465"
+      },
+      {
+        "id": "4a1e49d3-34e8-4581-a0be-cb1e00c8d5de",
+        "name": "Read PostgreSQL report",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          480,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "http://backend:3000/reports/daily",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "options": {
+            "timeout": 20000
+          }
+        }
+      },
+      {
+        "id": "836c1aef-2531-4c5f-9369-1d1fd711c61d",
+        "name": "Send summary",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          720,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "http://backend:3000/reports/send",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ {...$json, trigger: $('Daily at 09').isExecuted ? 'schedule' : 'webhook'} }}",
+          "options": {
+            "timeout": 20000
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Daily at 09": {
+        "main": [
+          [
+            {
+              "node": "Read PostgreSQL report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Manual report test": {
+        "main": [
+          [
+            {
+              "node": "Read PostgreSQL report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read PostgreSQL report": {
+        "main": [
+          [
+            {
+              "node": "Send summary",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "saveDataErrorExecution": "all",
+      "saveDataSuccessExecution": "all",
+      "errorWorkflow": "errorRecovery001"
+    },
+    "staticData": null,
+    "versionId": "2dfec7f0-c11d-4294-9d90-ca2062983685",
+    "activeVersionId": null,
+    "tags": []
+  },
+  {
+    "id": "errorRecovery001",
+    "name": "Error recovery and alert",
+    "active": false,
+    "nodes": [
+      {
+        "id": "f48fe41b-4a5d-4c94-927c-5c919cecd9b7",
+        "name": "Execution error",
+        "type": "n8n-nodes-base.errorTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "faf8d61c-6d27-4109-84f6-9863ee20c6fb",
+        "name": "Retry ready deliveries",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          240,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "http://backend:3000/recovery",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ $json }}",
+          "options": {
+            "timeout": 20000
+          }
+        },
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "749b3ce0-661e-4f56-a05e-ac5abd9d57c3",
+        "name": "Alert operations",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          480,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "http://backend:3000/alerts",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ {recovery: $json} }}",
+          "options": {
+            "timeout": 20000
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Execution error": {
+        "main": [
+          [
+            {
+              "node": "Retry ready deliveries",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Retry ready deliveries": {
+        "main": [
+          [
+            {
+              "node": "Alert operations",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "saveDataErrorExecution": "all",
+      "saveDataSuccessExecution": "all"
+    },
+    "staticData": null,
+    "versionId": "a306f0fc-f777-429a-99ce-a4a1e0702882",
+    "activeVersionId": null,
+    "tags": []
+  },
+  {
+    "id": "failureProbe001",
+    "name": "Synthetic failure probe",
+    "active": false,
+    "nodes": [
+      {
+        "id": "30e9f601-c8b2-46ee-902f-ae4920e8dd7c",
+        "name": "Failure probe",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "failure-probe",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "webhookId": "beddf5e3-8ec1-4e62-a03a-e0d07973a985"
+      },
+      {
+        "id": "9fbe7cd3-60e5-4381-a3c6-d2d287aff36b",
+        "name": "Deliberate failure",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          240,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "http://backend:3000/not-a-real-route",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ {} }}",
+          "options": {
+            "timeout": 20000
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Failure probe": {
+        "main": [
+          [
+            {
+              "node": "Deliberate failure",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "saveDataErrorExecution": "all",
+      "saveDataSuccessExecution": "all",
+      "errorWorkflow": "errorRecovery001"
+    },
+    "staticData": null,
+    "versionId": "fea31189-9fd2-483c-9bea-e57328204dc5",
+    "activeVersionId": null,
+    "tags": []
+  },
+  {
+    "id": "orderIntake001",
+    "name": "Order intake with human review",
+    "active": false,
+    "nodes": [
+      {
+        "id": "52f51bb5-68c1-4c4f-9446-a3d845793101",
+        "name": "Order webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "orders",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "webhookId": "1c6d9fb3-6be9-4ffe-a30f-d8462fc87c35"
+      },
+      {
+        "id": "7b5e1d1d-2ee9-4910-a7fb-526ed647a764",
+        "name": "Validate and enrich",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          240,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "http://backend:3000/orders",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $json.headers[\"x-api-key\"] || \"\" }}"
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": "={{ $json.headers[\"idempotency-key\"] || \"\" }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ $json.body }}",
+          "options": {
+            "timeout": 20000
+          }
+        }
+      },
+      {
+        "id": "19906e8f-c7c0-4e20-bf6d-3eb676da2684",
+        "name": "Classify and summarize",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          480,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "http://llm:8000/classify",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ {description: $json.payload.description} }}",
+          "options": {
+            "timeout": 75000
+          }
+        }
+      },
+      {
+        "id": "7329ff36-d0a0-4383-a7ce-461385a7d602",
+        "name": "Record LLM latency",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          720,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "http://backend:3000/telemetry/llm",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ {seconds: $json.seconds} }}",
+          "options": {
+            "timeout": 20000
+          }
+        }
+      },
+      {
+        "id": "00a178d4-d94c-4bf0-b439-5c6990a2c929",
+        "name": "Persist classification",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          960,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "={{ \"http://backend:3000/orders/\" + $(\"Validate and enrich\").item.json.id + \"/classification\" }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ $(\"Classify and summarize\").item.json.classification }}",
+          "options": {
+            "timeout": 20000
+          }
+        }
+      },
+      {
+        "id": "c5cf7b33-4fa0-438d-9c49-7ee35f5805a7",
+        "name": "Needs approval",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1200,
+          200
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "2ddcf4dc-d96e-44ba-aed8-a0e0c822e645",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "pending",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "6df3634a-2cea-48f8-99d8-3e4f3538c860",
+        "name": "Register approval callback",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1440,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "={{ \"http://backend:3000/approvals/\" + $(\"Validate and enrich\").item.json.id + \"/register\" }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ {resumeUrl: $execution.resumeUrl} }}",
+          "options": {
+            "timeout": 20000
+          }
+        }
+      },
+      {
+        "id": "553e4ac6-cd08-4ba8-9840-8cd89caba3bd",
+        "name": "Wait for human",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1680,
+          200
+        ],
+        "parameters": {
+          "resume": "webhook",
+          "httpMethod": "POST",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "webhookId": "5b4f5e4b-1d12-4058-897e-b57a6de8042b"
+      },
+      {
+        "id": "89ffd5c2-b5d1-44e7-9e42-0eaa76a08245",
+        "name": "Create task invoice and summary",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1920,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "={{ \"http://backend:3000/orders/\" + $(\"Validate and enrich\").item.json.id + \"/fulfill\" }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "x-api-key",
+                "value": "={{ $env.API_KEY }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ {} }}",
+          "options": {
+            "timeout": 20000
+          }
+        },
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 1000
+      }
+    ],
+    "connections": {
+      "Order webhook": {
+        "main": [
+          [
+            {
+              "node": "Validate and enrich",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validate and enrich": {
+        "main": [
+          [
+            {
+              "node": "Classify and summarize",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Classify and summarize": {
+        "main": [
+          [
+            {
+              "node": "Record LLM latency",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Record LLM latency": {
+        "main": [
+          [
+            {
+              "node": "Persist classification",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Persist classification": {
+        "main": [
+          [
+            {
+              "node": "Needs approval",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Needs approval": {
+        "main": [
+          [
+            {
+              "node": "Register approval callback",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Create task invoice and summary",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Register approval callback": {
+        "main": [
+          [
+            {
+              "node": "Wait for human",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait for human": {
+        "main": [
+          [
+            {
+              "node": "Create task invoice and summary",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "saveDataErrorExecution": "all",
+      "saveDataSuccessExecution": "all",
+      "errorWorkflow": "errorRecovery001"
+    },
+    "staticData": null,
+    "versionId": "808ffa6a-61cb-4479-ba72-9d6e57ddea5d",
+    "activeVersionId": null,
+    "tags": []
+  }
+]

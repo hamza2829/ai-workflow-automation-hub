@@ -106,7 +106,8 @@
     "saveDataErrorExecution": "all",
     "saveDataSuccessExecution": "all"
   },
-  "versionId": "f34f4be7-4b5b-4018-b4e1-b79b883dc3f3",
-  "tags": [],
-  "activeVersionId": null
+  "staticData": null,
+  "versionId": "a306f0fc-f777-429a-99ce-a4a1e0702882",
+  "activeVersionId": null,
+  "tags": []
 }

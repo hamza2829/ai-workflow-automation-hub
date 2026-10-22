@@ -1,0 +1,215 @@
+{
+  "conclusion": "success",
+  "createdAt": "2026-10-22T00:18:40Z",
+  "headSha": "dca5681a398aaa7eeb4d720020f78494c25925a6",
+  "jobs": [
+    {
+      "completedAt": "2026-10-22T00:22:43Z",
+      "conclusion": "success",
+      "databaseId": 119563074113,
+      "name": "verify",
+      "startedAt": "2026-10-22T00:18:44Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-22T00:18:45Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-22T00:18:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:18:46Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-22T00:18:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:18:47Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "startedAt": "2026-10-22T00:18:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:18:47Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 4,
+          "startedAt": "2026-10-22T00:18:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:18:50Z",
+          "conclusion": "success",
+          "name": "Run npm ci",
+          "number": 5,
+          "startedAt": "2026-10-22T00:18:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:18:50Z",
+          "conclusion": "success",
+          "name": "Run mkdir -p docs/runs",
+          "number": 6,
+          "startedAt": "2026-10-22T00:18:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:18:55Z",
+          "conclusion": "success",
+          "name": "Run npm run lint && npm test && npm run build",
+          "number": 7,
+          "startedAt": "2026-10-22T00:18:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:18:59Z",
+          "conclusion": "success",
+          "name": "Run pip install -r llm-service/requirements.txt",
+          "number": 8,
+          "startedAt": "2026-10-22T00:18:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:19:00Z",
+          "conclusion": "success",
+          "name": "Run ruff check llm-service && pytest -q llm-service --junitxml=docs/runs/pytest.xml",
+          "number": 9,
+          "startedAt": "2026-10-22T00:18:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:19:00Z",
+          "conclusion": "success",
+          "name": "Run node tests/setup.mjs",
+          "number": 10,
+          "startedAt": "2026-10-22T00:19:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:20:41Z",
+          "conclusion": "success",
+          "name": "Run docker compose up -d --build --wait --wait-timeout 240",
+          "number": 11,
+          "startedAt": "2026-10-22T00:19:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:21:00Z",
+          "conclusion": "success",
+          "name": "Run sh tests/smoke.sh",
+          "number": 12,
+          "startedAt": "2026-10-22T00:20:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:21:20Z",
+          "conclusion": "success",
+          "name": "Run npx playwright install --with-deps chromium",
+          "number": 13,
+          "startedAt": "2026-10-22T00:21:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:21:22Z",
+          "conclusion": "success",
+          "name": "Run node backend/tests/ui.mjs",
+          "number": 14,
+          "startedAt": "2026-10-22T00:21:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:21:22Z",
+          "conclusion": "success",
+          "name": "Run node tests/evaluate.mjs",
+          "number": 15,
+          "startedAt": "2026-10-22T00:21:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:21:26Z",
+          "conclusion": "success",
+          "name": "Export the workflows from the running n8n instance",
+          "number": 16,
+          "startedAt": "2026-10-22T00:21:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:22:28Z",
+          "conclusion": "success",
+          "name": "Run local Ollama model and evaluate compatible API",
+          "number": 17,
+          "startedAt": "2026-10-22T00:21:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:22:29Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 18,
+          "startedAt": "2026-10-22T00:22:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:22:29Z",
+          "conclusion": "skipped",
+          "name": "Run docker compose logs --no-color",
+          "number": 19,
+          "startedAt": "2026-10-22T00:22:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:22:40Z",
+          "conclusion": "success",
+          "name": "Run docker compose --profile ollama down -v",
+          "number": 20,
+          "startedAt": "2026-10-22T00:22:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:22:40Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 38,
+          "startedAt": "2026-10-22T00:22:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:22:41Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 39,
+          "startedAt": "2026-10-22T00:22:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:22:42Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 40,
+          "startedAt": "2026-10-22T00:22:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T00:22:42Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 41,
+          "startedAt": "2026-10-22T00:22:42Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/hamza2829/ai-workflow-automation-hub/actions/runs/39698925213/job/119563074113"
+    }
+  ],
+  "updatedAt": "2026-10-22T00:22:44Z",
+  "url": "https://github.com/hamza2829/ai-workflow-automation-hub/actions/runs/39698925213",
+  "backendTests": 20,
+  "pythonTests": 9,
+  "exportNormalization": "Removed instance ownership and timer cache; definitions imported inactive and published by bootstrap."
+}

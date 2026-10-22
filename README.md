@@ -102,7 +102,29 @@ For a hosted compatible endpoint, set LLM_MODE=openai, LLM_BASE_URL including `/
 
 ## Verification and results
 
-Local verification completed: **20 Vitest tests** for backend validation and the webhook payload contract, and **9 pytest tests** for classification, confidence routing, invalid input, compatible API requests and invalid model output. TypeScript checking and Ruff passed. Runtime Compose results will be recorded here only after the CI execution completes.
+Measured on the GitHub Actions Linux runner in [verified run 39698925213](https://github.com/hamza2829/ai-workflow-automation-hub/actions/runs/39698925213), source commit `dca5681`. Full Docker Compose flow completed successfully. Raw measurements and per-order predictions are in [docs/runs/](docs/runs/).
+
+| Check                                            | Actual result                      |
+| ------------------------------------------------ | ---------------------------------- |
+| Backend Vitest suite, including webhook contract | 20 passed                          |
+| Python pytest suite                              | 9 passed                           |
+| Compose smoke assertions                         | 14 passed                          |
+| Chromium approval page test                      | 1 passed                           |
+| Real Ollama order through n8n                    | completed, 3 mock external effects |
+| TypeScript, formatting, Ruff, Docker builds      | Passed in linked CI run            |
+
+| Evaluation, 20 synthetic labeled orders | Correct | Accuracy | Fallbacks | Mean HTTP latency | p95 HTTP latency |
+| --------------------------------------- | ------- | -------- | --------- | ----------------- | ---------------- |
+| Deterministic mock                      | 18/20   | 90.0%    | 0         | 5.56 ms           | 4.91 ms          |
+| Ollama qwen2.5:0.5b                     | 15/20   | 75.0%    | 0         | 765.53 ms         | 897.59 ms        |
+
+One automatic mock order took **586 ms** from webhook submission to completed state. The warmed Ollama workflow order took **1080 ms**. These are individual smoke timings, not a load benchmark. HTTP evaluation latency includes transport and first-request overhead; p95 uses nearest rank across 20 sequential requests. Accuracy is raw category accuracy, including low confidence predictions. Mock accuracy measures a test double, and model confidence is not calibrated.
+
+The model produced **5 incorrect high confidence predictions**. The approval threshold alone did not catch these errors. This is a concrete limitation of using the model's own confidence score for routing.
+
+The smoke assertions cover API authentication, malformed payloads, concurrent idempotency, replay conflict, no duplicate external effects, approve and reject callbacks, injected integration failures, retries and alerts, manual and actual timer reports, persisted invoice drafts, Prometheus targets and the provisioned Grafana dashboard. The browser test captures the actual pending queue and clicks its approval control:
+
+![Actual approval queue captured by the CI browser test](docs/runs/approval-queue.png)
 
 The CI pipeline installs dependencies, checks formatting and types, runs both test suites, builds Docker images, starts Compose, executes the curl and Node smoke checks, evaluates mock mode, starts a real Ollama model, evaluates it and submits one model-classified order through n8n. CI accelerates the report schedule to every minute and verifies a real timer execution. Artifacts retain measured results and runtime workflow exports.
 

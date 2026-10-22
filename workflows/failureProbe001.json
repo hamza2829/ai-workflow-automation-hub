@@ -69,7 +69,8 @@
     "saveDataSuccessExecution": "all",
     "errorWorkflow": "errorRecovery001"
   },
-  "versionId": "489a0fa8-43c5-4306-8f2e-d8dcdece167d",
-  "tags": [],
-  "activeVersionId": null
+  "staticData": null,
+  "versionId": "fea31189-9fd2-483c-9bea-e57328204dc5",
+  "activeVersionId": null,
+  "tags": []
 }

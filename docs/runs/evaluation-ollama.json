@@ -1,0 +1,293 @@
+{
+  "timestamp": "2026-10-22T00:22:27.538Z",
+  "mode": "ollama",
+  "samples": 20,
+  "correct": 15,
+  "accuracy": 0.75,
+  "fallbacks": 0,
+  "human_review_count": 0,
+  "mean_request_ms": 765.52933715,
+  "p95_request_ms": 897.592232,
+  "results": [
+    {
+      "id": 1,
+      "label": "engineering",
+      "description": "Build a technical integration",
+      "classification": {
+        "category": "engineering",
+        "summary": "Technical Integration",
+        "confidence": 0.95
+      },
+      "seconds": 2.0471182339999814,
+      "fallback": false,
+      "request_ms": 2092.868414,
+      "correct": true
+    },
+    {
+      "id": 2,
+      "label": "engineering",
+      "description": "Fix the API bug",
+      "classification": {
+        "category": "engineering",
+        "summary": "API bug fix",
+        "confidence": 1
+      },
+      "seconds": 0.7644076359999872,
+      "fallback": false,
+      "request_ms": 769.0719059999997,
+      "correct": true
+    },
+    {
+      "id": 3,
+      "label": "engineering",
+      "description": "Review deployment plan",
+      "classification": {
+        "category": "engineering",
+        "summary": "Deployment plan for review.",
+        "confidence": 0.95
+      },
+      "seconds": 0.6254725410000219,
+      "fallback": false,
+      "request_ms": 629.0427380000001,
+      "correct": true
+    },
+    {
+      "id": 4,
+      "label": "engineering",
+      "description": "Debug API latency",
+      "classification": {
+        "category": "engineering",
+        "summary": "API latency is a critical issue that affects the performance of applications.",
+        "confidence": 0.95
+      },
+      "seconds": 0.8942643069999576,
+      "fallback": false,
+      "request_ms": 897.592232,
+      "correct": true
+    },
+    {
+      "id": 5,
+      "label": "engineering",
+      "description": "Add integration mapping",
+      "classification": {
+        "category": "engineering",
+        "summary": "Integrate new data sources into the system.",
+        "confidence": 0.9
+      },
+      "seconds": 0.7777353569999832,
+      "fallback": false,
+      "request_ms": 781.5306390000005,
+      "correct": true
+    },
+    {
+      "id": 6,
+      "label": "engineering",
+      "description": "Technical migration request",
+      "classification": {
+        "category": "engineering",
+        "summary": "Technical migration request",
+        "confidence": 1
+      },
+      "seconds": 0.6962067819999902,
+      "fallback": false,
+      "request_ms": 699.2014950000003,
+      "correct": true
+    },
+    {
+      "id": 7,
+      "label": "sales",
+      "description": "Add license seats",
+      "classification": {
+        "category": "finance",
+        "summary": "增加座位数量",
+        "confidence": 0.9
+      },
+      "seconds": 0.6124669990000484,
+      "fallback": false,
+      "request_ms": 615.319571,
+      "correct": false
+    },
+    {
+      "id": 8,
+      "label": "sales",
+      "description": "Renew subscription",
+      "classification": {
+        "category": "finance",
+        "summary": "Renew the subscription.",
+        "confidence": 1
+      },
+      "seconds": 0.8679969989999563,
+      "fallback": false,
+      "request_ms": 870.830489,
+      "correct": false
+    },
+    {
+      "id": 9,
+      "label": "sales",
+      "description": "Schedule a demo",
+      "classification": {
+        "category": "sales",
+        "summary": "Sales",
+        "confidence": 1
+      },
+      "seconds": 0.7841947020000362,
+      "fallback": false,
+      "request_ms": 789.2028799999998,
+      "correct": true
+    },
+    {
+      "id": 10,
+      "label": "sales",
+      "description": "Request plan upgrade",
+      "classification": {
+        "category": "finance",
+        "summary": "Upgrade the order plan.",
+        "confidence": 0.9
+      },
+      "seconds": 0.5971704369999316,
+      "fallback": false,
+      "request_ms": 600.6733589999994,
+      "correct": false
+    },
+    {
+      "id": 11,
+      "label": "sales",
+      "description": "Purchase ten seats",
+      "classification": {
+        "category": "finance",
+        "summary": "购买十张座位",
+        "confidence": 0.9
+      },
+      "seconds": 0.6101986510000188,
+      "fallback": false,
+      "request_ms": 613.8952900000004,
+      "correct": false
+    },
+    {
+      "id": 12,
+      "label": "sales",
+      "description": "New annual license",
+      "classification": {
+        "category": "engineering",
+        "summary": "Annual license for new equipment or systems.",
+        "confidence": 0.95
+      },
+      "seconds": 0.8149186019999206,
+      "fallback": false,
+      "request_ms": 817.3678419999997,
+      "correct": false
+    },
+    {
+      "id": 13,
+      "label": "finance",
+      "description": "Correct invoice address",
+      "classification": {
+        "category": "finance",
+        "summary": "发票地址正确",
+        "confidence": 1
+      },
+      "seconds": 0.5400149949999786,
+      "fallback": false,
+      "request_ms": 542.2753049999992,
+      "correct": true
+    },
+    {
+      "id": 14,
+      "label": "finance",
+      "description": "Issue a refund",
+      "classification": {
+        "category": "finance",
+        "summary": "Refund issued for an issue.",
+        "confidence": 0.9
+      },
+      "seconds": 0.7579010979999339,
+      "fallback": false,
+      "request_ms": 760.3040069999988,
+      "correct": true
+    },
+    {
+      "id": 15,
+      "label": "finance",
+      "description": "Resolve payment mismatch",
+      "classification": {
+        "category": "finance",
+        "summary": "Payment mismatch issue",
+        "confidence": 0.9
+      },
+      "seconds": 0.5864586900000859,
+      "fallback": false,
+      "request_ms": 589.1521350000003,
+      "correct": true
+    },
+    {
+      "id": 16,
+      "label": "finance",
+      "description": "Update billing contact",
+      "classification": {
+        "category": "finance",
+        "summary": "Update the billing contact information.",
+        "confidence": 0.95
+      },
+      "seconds": 0.6752704179999682,
+      "fallback": false,
+      "request_ms": 677.5000710000004,
+      "correct": true
+    },
+    {
+      "id": 17,
+      "label": "finance",
+      "description": "Review tax amount",
+      "classification": {
+        "category": "finance",
+        "summary": "Tax amount is reviewed.",
+        "confidence": 1
+      },
+      "seconds": 0.6159674259999974,
+      "fallback": false,
+      "request_ms": 618.073507000001,
+      "correct": true
+    },
+    {
+      "id": 18,
+      "label": "finance",
+      "description": "Send invoice copy",
+      "classification": {
+        "category": "finance",
+        "summary": "Invoice copy sent.",
+        "confidence": 1
+      },
+      "seconds": 0.5366954549999718,
+      "fallback": false,
+      "request_ms": 538.9221500000003,
+      "correct": true
+    },
+    {
+      "id": 19,
+      "label": "engineering",
+      "description": "Connect our systems",
+      "classification": {
+        "category": "engineering",
+        "summary": "Connect the systems.",
+        "confidence": 1
+      },
+      "seconds": 0.6395265029999564,
+      "fallback": false,
+      "request_ms": 641.7110720000001,
+      "correct": true
+    },
+    {
+      "id": 20,
+      "label": "finance",
+      "description": "Return duplicate charge",
+      "classification": {
+        "category": "finance",
+        "summary": "Duplicate charges are a common issue in financial transactions.",
+        "confidence": 0.9
+      },
+      "seconds": 0.7637092470000653,
+      "fallback": false,
+      "request_ms": 766.051641,
+      "correct": true
+    }
+  ]
+}

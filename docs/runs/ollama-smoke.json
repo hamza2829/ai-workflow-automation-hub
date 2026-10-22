@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-10-22T00:22:28.656Z",
+  "mode": "ollama",
+  "status": "completed",
+  "classification": {
+    "summary": "Add ten annual software license seats to the sales team.",
+    "category": "sales",
+    "confidence": 1
+  },
+  "total_ms": 1080,
+  "external_effects": 3
+}

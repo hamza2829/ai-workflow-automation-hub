@@ -1,0 +1,293 @@
+{
+  "timestamp": "2026-10-22T00:21:22.862Z",
+  "mode": "mock",
+  "samples": 20,
+  "correct": 18,
+  "accuracy": 0.9,
+  "fallbacks": 0,
+  "human_review_count": 2,
+  "mean_request_ms": 5.561380050000001,
+  "p95_request_ms": 4.910415999999998,
+  "results": [
+    {
+      "id": 1,
+      "label": "engineering",
+      "description": "Build a technical integration",
+      "classification": {
+        "category": "engineering",
+        "summary": "Build a technical integration",
+        "confidence": 0.95
+      },
+      "seconds": 0.00004301500001702152,
+      "fallback": false,
+      "request_ms": 64.240993,
+      "correct": true
+    },
+    {
+      "id": 2,
+      "label": "engineering",
+      "description": "Fix the API bug",
+      "classification": {
+        "category": "engineering",
+        "summary": "Fix the API bug",
+        "confidence": 0.95
+      },
+      "seconds": 0.00002640999997538529,
+      "fallback": false,
+      "request_ms": 4.910415999999998,
+      "correct": true
+    },
+    {
+      "id": 3,
+      "label": "engineering",
+      "description": "Review deployment plan",
+      "classification": {
+        "category": "engineering",
+        "summary": "Review deployment plan",
+        "confidence": 0.95
+      },
+      "seconds": 0.00001741699998092372,
+      "fallback": false,
+      "request_ms": 2.982513999999995,
+      "correct": true
+    },
+    {
+      "id": 4,
+      "label": "engineering",
+      "description": "Debug API latency",
+      "classification": {
+        "category": "engineering",
+        "summary": "Debug API latency",
+        "confidence": 0.95
+      },
+      "seconds": 0.000015743000005841168,
+      "fallback": false,
+      "request_ms": 2.264420000000001,
+      "correct": true
+    },
+    {
+      "id": 5,
+      "label": "engineering",
+      "description": "Add integration mapping",
+      "classification": {
+        "category": "engineering",
+        "summary": "Add integration mapping",
+        "confidence": 0.95
+      },
+      "seconds": 0.000020850999987942487,
+      "fallback": false,
+      "request_ms": 2.636071000000001,
+      "correct": true
+    },
+    {
+      "id": 6,
+      "label": "engineering",
+      "description": "Technical migration request",
+      "classification": {
+        "category": "engineering",
+        "summary": "Technical migration request",
+        "confidence": 0.95
+      },
+      "seconds": 0.00002055099997733123,
+      "fallback": false,
+      "request_ms": 2.7989570000000015,
+      "correct": true
+    },
+    {
+      "id": 7,
+      "label": "sales",
+      "description": "Add license seats",
+      "classification": {
+        "category": "sales",
+        "summary": "Add license seats",
+        "confidence": 0.95
+      },
+      "seconds": 0.000018798000041897467,
+      "fallback": false,
+      "request_ms": 2.3233790000000027,
+      "correct": true
+    },
+    {
+      "id": 8,
+      "label": "sales",
+      "description": "Renew subscription",
+      "classification": {
+        "category": "sales",
+        "summary": "Renew subscription",
+        "confidence": 0.95
+      },
+      "seconds": 0.000018136999983653368,
+      "fallback": false,
+      "request_ms": 2.019258999999991,
+      "correct": true
+    },
+    {
+      "id": 9,
+      "label": "sales",
+      "description": "Schedule a demo",
+      "classification": {
+        "category": "sales",
+        "summary": "Schedule a demo",
+        "confidence": 0.95
+      },
+      "seconds": 0.0000189890000115156,
+      "fallback": false,
+      "request_ms": 4.6602080000000115,
+      "correct": true
+    },
+    {
+      "id": 10,
+      "label": "sales",
+      "description": "Request plan upgrade",
+      "classification": {
+        "category": "sales",
+        "summary": "Request plan upgrade",
+        "confidence": 0.95
+      },
+      "seconds": 0.000020341000038115453,
+      "fallback": false,
+      "request_ms": 2.5799559999999957,
+      "correct": true
+    },
+    {
+      "id": 11,
+      "label": "sales",
+      "description": "Purchase ten seats",
+      "classification": {
+        "category": "sales",
+        "summary": "Purchase ten seats",
+        "confidence": 0.95
+      },
+      "seconds": 0.000018888999989030708,
+      "fallback": false,
+      "request_ms": 2.106770999999995,
+      "correct": true
+    },
+    {
+      "id": 12,
+      "label": "sales",
+      "description": "New annual license",
+      "classification": {
+        "category": "sales",
+        "summary": "New annual license",
+        "confidence": 0.95
+      },
+      "seconds": 0.000018437999983689224,
+      "fallback": false,
+      "request_ms": 1.9785579999999925,
+      "correct": true
+    },
+    {
+      "id": 13,
+      "label": "finance",
+      "description": "Correct invoice address",
+      "classification": {
+        "category": "finance",
+        "summary": "Correct invoice address",
+        "confidence": 0.95
+      },
+      "seconds": 0.00002007000000503467,
+      "fallback": false,
+      "request_ms": 1.9899450000000058,
+      "correct": true
+    },
+    {
+      "id": 14,
+      "label": "finance",
+      "description": "Issue a refund",
+      "classification": {
+        "category": "finance",
+        "summary": "Issue a refund",
+        "confidence": 0.95
+      },
+      "seconds": 0.00001955999999836422,
+      "fallback": false,
+      "request_ms": 1.7465880000000027,
+      "correct": true
+    },
+    {
+      "id": 15,
+      "label": "finance",
+      "description": "Resolve payment mismatch",
+      "classification": {
+        "category": "finance",
+        "summary": "Resolve payment mismatch",
+        "confidence": 0.95
+      },
+      "seconds": 0.000020010000014281104,
+      "fallback": false,
+      "request_ms": 3.224400000000003,
+      "correct": true
+    },
+    {
+      "id": 16,
+      "label": "finance",
+      "description": "Update billing contact",
+      "classification": {
+        "category": "finance",
+        "summary": "Update billing contact",
+        "confidence": 0.95
+      },
+      "seconds": 0.00001897799995731475,
+      "fallback": false,
+      "request_ms": 1.6889500000000055,
+      "correct": true
+    },
+    {
+      "id": 17,
+      "label": "finance",
+      "description": "Review tax amount",
+      "classification": {
+        "category": "finance",
+        "summary": "Review tax amount",
+        "confidence": 0.95
+      },
+      "seconds": 0.00001995999997461695,
+      "fallback": false,
+      "request_ms": 1.8921670000000006,
+      "correct": true
+    },
+    {
+      "id": 18,
+      "label": "finance",
+      "description": "Send invoice copy",
+      "classification": {
+        "category": "finance",
+        "summary": "Send invoice copy",
+        "confidence": 0.95
+      },
+      "seconds": 0.000017957000011392665,
+      "fallback": false,
+      "request_ms": 1.7469980000000191,
+      "correct": true
+    },
+    {
+      "id": 19,
+      "label": "engineering",
+      "description": "Connect our systems",
+      "classification": {
+        "category": "sales",
+        "summary": "Connect our systems",
+        "confidence": 0.4
+      },
+      "seconds": 0.0000156140000058258,
+      "fallback": false,
+      "request_ms": 1.7237430000000131,
+      "correct": false
+    },
+    {
+      "id": 20,
+      "label": "finance",
+      "description": "Return duplicate charge",
+      "classification": {
+        "category": "sales",
+        "summary": "Return duplicate charge",
+        "confidence": 0.4
+      },
+      "seconds": 0.000022913999998763757,
+      "fallback": false,
+      "request_ms": 1.7133079999999836,
+      "correct": false
+    }
+  ]
+}

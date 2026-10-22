@@ -89,7 +89,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ {...$json, trigger: $execution.mode} }}",
+        "jsonBody": "={{ {...$json, trigger: $('Daily at 09').isExecuted ? 'schedule' : 'webhook'} }}",
         "options": {
           "timeout": 20000
         }

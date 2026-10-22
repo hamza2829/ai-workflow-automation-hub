@@ -203,7 +203,7 @@ flow(
     http(
       "Send summary",
       "http://backend:3000/reports/send",
-      "={{ {...$json, trigger: $execution.mode} }}",
+      "={{ {...$json, trigger: $('Daily at 09').isExecuted ? 'schedule' : 'webhook'} }}",
     ),
   ],
   [

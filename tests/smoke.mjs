@@ -188,14 +188,16 @@ mark("bounded retries error workflow recovery and alert");
 await call("http://localhost:5678/webhook/report", {});
 await until(
   async () =>
-    (await records()).data.some((x) => x.body.since === "last 24 hours"),
+    (await records()).data.some(
+      (x) => x.body.since === "last 24 hours" && x.body.trigger === "webhook",
+    ),
   "daily report",
 );
 mark("daily report graph reads PostgreSQL and sends summary");
 if (process.env.EXPECT_SCHEDULE === "1") {
   await until(
     async () =>
-      (await records()).data.some((x) => x.body.trigger === "trigger"),
+      (await records()).data.some((x) => x.body.trigger === "schedule"),
     "real schedule trigger",
     90000,
   );

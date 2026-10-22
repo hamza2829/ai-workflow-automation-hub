@@ -71,10 +71,19 @@ async function intake(description, suffix) {
   const payload = { customerId, description, amount: 120, currency: "EUR" };
   const idem = "smoke-" + run + "-" + suffix;
   const started = Date.now();
-  const response = await call("http://localhost:5678/webhook/orders", payload, {
-    "Idempotency-Key": idem,
-  });
-  assert.equal(response.status, 200);
+  // The HTTP health endpoint can be ready before published triggers register.
+  await until(async () => {
+    const response = await call(
+      "http://localhost:5678/webhook/orders",
+      payload,
+      {
+        "Idempotency-Key": idem,
+      },
+    );
+    if (response.status === 404) return false;
+    assert.equal(response.status, 200);
+    return true;
+  }, "published webhook registration");
   const row = await until(async () => {
     const a = await call(base + "/approvals");
     const found = a.data.find((x) => x.payload.description === description);
